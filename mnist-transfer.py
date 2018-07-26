@@ -17,6 +17,8 @@ Base mode for transfer learning is configured below.
 """
 
 mnist_conv_base.trainable = False
+mnist_conv_base.layers.pop()
+mnist_conv_base.layers.pop()
 
 train_data_gen = ImageDataGenerator(
         rescale=1./255,
@@ -37,18 +39,18 @@ train_generator = train_data_gen.flow_from_directory(
 test_generator = test_data_gen.flow_from_directory(
         test_dir,
         target_size=(28, 28),
-        batchsize=20,
+        batch_size=20,
         color_mode="grayscale"
         )
 
 model = models.Sequential()
-model.add(conv_base)
-model.add(layers.Flatten())
+model.add(mnist_conv_base)
+#model.add(layers.Flatten())
 
 model.add(layers.Dense(256, activation='relu'))
 model.add(layers.Dense(9, activation="softmax"))
 
-model.compile(loss="categorical_crossentroy",
+model.compile(loss="categorical_crossentropy",
               optimizer=optimizers.Adadelta(),
               metrics=['acc'])
 """
@@ -79,8 +81,8 @@ model.compile(loss="categorical_crossentroy",
 """
 history = model.fit_generator(
         train_generator,
-        steps_per_epocs=1337,
+        steps_per_epoch=409,
         epochs=10,
         validation_data=test_generator,
-        validation_steps=50)
+        validation_steps=5)
 
