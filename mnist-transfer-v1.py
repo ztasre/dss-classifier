@@ -16,11 +16,15 @@ Base mode for transfer learning is configured below.
 2. Layers are set to be none trainable
 """
 
+print('TOTAL LAYERS: ', len(mnist_conv_base.layers))
 mnist_conv_base.trainable = False
-mnsit_conv_base.summary()
-mnist_conv_base.layers.pop()
-mnist_conv_base.layers.pop()
-mnist_conv_base.layers.pop()
+mnist_conv_base.summary()
+n = 6
+for i in range(n):
+    mnist_conv_base.layers.pop()
+
+mnist_conv_base.add(layers.Flatten())
+mnist_conv_base.summary()
 
 train_data_gen = ImageDataGenerator(
         rescale=1./255,
@@ -52,10 +56,13 @@ model.add(mnist_conv_base)
 model.add(layers.Dense(256, activation='relu'))
 model.add(layers.Dense(9, activation="softmax"))
 
+model.summary()
+
+"""
 model.compile(loss="categorical_crossentropy",
               optimizer=optimizers.Adadelta(),
               metrics=['acc'])
-"""
+
     Total amount of data in train: 8168
 
     eight: 856
@@ -79,7 +86,6 @@ model.compile(loss="categorical_crossentropy",
     six: 10
     three: 10
     two: 10
-
 """
 history = model.fit_generator(
         train_generator,
@@ -87,4 +93,5 @@ history = model.fit_generator(
         epochs=10,
         validation_data=test_generator,
         validation_steps=5)
+
 
