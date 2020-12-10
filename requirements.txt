@@ -43,7 +43,7 @@ scikit-image==0.14.0
 scipy==1.0.1
 six==1.11.0
 tensorboard==1.7.0
-tensorflow-gpu==1.7.0+computecanada
+tensorflow-gpu==2.4.0rc4
 termcolor==1.1.0
 terminaltables==3.1.0
 toolz==0.9.0
